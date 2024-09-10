@@ -116,7 +116,7 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password
 
-        run: php artisan test --coverage
+        run: ./vendor/bin/phpunit --coverage-html reports/
 
       - uses: symfonycorp/security-checker-action@v5
 
