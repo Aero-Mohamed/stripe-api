@@ -15,13 +15,13 @@ trait ApiResponse
     }
 
     /**
-     * @param object|null $data
+     * @param mixed $data
      * @param string|null $message
      * @param int $statusCode
      * @return JsonResponse
      */
     public function success(
-        ?object $data = null,
+        mixed $data = null,
         string $message = null,
         int $statusCode = ResponseAlias::HTTP_OK
     ): JsonResponse {

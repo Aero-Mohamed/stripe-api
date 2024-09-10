@@ -1,0 +1,255 @@
+name: Authentication
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/register
+    metadata:
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Register a new user and create an account.'
+      description: |-
+        This endpoint allows a new user to register by providing their details. Upon successful registration,
+        a new user account will be created, and the created user’s data will be returned along with a success message.
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The full name of the user.'
+        required: true
+        example: 'John Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      email:
+        name: email
+        description: 'The email address of the user.'
+        required: true
+        example: user@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      password:
+        name: password
+        description: 'The password for the user account.'
+        required: true
+        example: secretpassword
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: "The confirmation of the user's password."
+        required: true
+        example: secretpassword
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      name: 'John Doe'
+      email: user@example.com
+      password: secretpassword
+      password_confirmation: secretpassword
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "success": true,
+            "status_code": 201,
+            "data": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "user@example.com",
+              "registered_at": "2024-09-10T12:34:56.000000Z",
+            },
+            "message": "Account Created.",
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "success": false,
+            "status_code": 422,
+            "data": null,
+            "message": "The given data was invalid.",
+            "errors": {
+              "name": ["The name field is required."],
+              "email": ["The email field is required.", "The email must be a valid email address."],
+              "password": ["The password field is required."],
+              "password_confirmation": ["The password confirmation does not match."]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/login
+    metadata:
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Login a user and provide an authentication token.'
+      description: |-
+        This endpoint allows a user to log in using their credentials.
+        If the login is successful, it returns an authentication token that can be used for subsequent requests.
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'The email of the user.'
+        required: true
+        example: user@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      password:
+        name: password
+        description: 'The password of the user.'
+        required: true
+        example: secret
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      email: user@example.com
+      password: secret
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "data": {
+              "token": "2|1edc890as98d1a7df1...",
+              "user": {
+                "id": 1,
+                "name": "John Doe",
+                "email": "user@example.com",
+                "registered_at": "2024-01-01T00:00:00.000000Z",
+              }
+            },
+            "message": "Success",
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "success": false,
+            "status_code": 401,
+            "data": null,
+            "message": "Invalid credentials",
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/logout
+    metadata:
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Log out the currently authenticated user and revoke their authentication tokens.'
+      description: |-
+        This endpoint allows an authenticated user to log out by deleting all of their existing tokens.
+        After logging out, the user will no longer be able to use their previous tokens to access protected routes.
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "data": null,
+            "message": "Success",
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "success": false,
+            "status_code": 401,
+            "data": null,
+            "message": "Unauthorized",
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
