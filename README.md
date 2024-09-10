@@ -7,8 +7,11 @@
 - `php artisan migrate:fresh --seed --force`
 
 ## Unit Test
-- **PestPhp Testing**
+- **Testing**
     - `php artisan test`
+- **Testing** with coverage report
+  - Code coverage driver is needed (Xdebug or PCOV)
+  - `php artisan test --coverage`
 
 ## Code Quality
 - **Static Code Analysis** (PHP Stan + LaraStan) - Testing for potential errors.
