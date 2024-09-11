@@ -103,8 +103,15 @@ jobs:
 
       - name: Show dir
         run: pwd
+        
       - name: PHP Version
         run: php --version
+
+      - name: Install Passport keys
+        run: php artisan passport:keys --force
+
+      - name: Create Password Client
+        run: php artisan passport:client --password --name=Client1 --provider=users
 
       # Code quality
       - name: Execute tests (Unit and Feature tests)
