@@ -105,7 +105,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 11, 2024 (85ba46a)</li>
+        <li>Last updated: September 11, 2024 (b7e2d3f)</li>
     </ul>
 </div>
 
@@ -150,8 +150,8 @@ a new user account will be created, and the created user’s data will be return
     --data "{
     \"name\": \"John Doe\",
     \"email\": \"user@example.com\",
-    \"password\": \"secretpassword\",
-    \"password_confirmation\": \"secretpassword\"
+    \"password\": \"123456789\",
+    \"password_confirmation\": \"123456789\"
 }"
 </code></pre></div>
 
@@ -169,8 +169,8 @@ const headers = {
 let body = {
     "name": "John Doe",
     "email": "user@example.com",
-    "password": "secretpassword",
-    "password_confirmation": "secretpassword"
+    "password": "123456789",
+    "password_confirmation": "123456789"
 };
 
 fetch(url, {
@@ -193,8 +193,8 @@ $response = $client-&gt;post(
         'json' =&gt; [
             'name' =&gt; 'John Doe',
             'email' =&gt; 'user@example.com',
-            'password' =&gt; 'secretpassword',
-            'password_confirmation' =&gt; 'secretpassword',
+            'password' =&gt; '123456789',
+            'password_confirmation' =&gt; '123456789',
         ],
     ]
 );
@@ -210,8 +210,8 @@ url = '{{ config("app.url") }}/api/v1/auth/register'
 payload = {
     "name": "John Doe",
     "email": "user@example.com",
-    "password": "secretpassword",
-    "password_confirmation": "secretpassword"
+    "password": "123456789",
+    "password_confirmation": "123456789"
 }
 headers = {
   'Content-Type': 'application/json',
@@ -358,10 +358,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-v1-auth-register"
-               value="secretpassword"
+               value="123456789"
                data-component="body">
     <br>
-<p>The password for the user account. Example: <code>secretpassword</code></p>
+<p>The password for the user account. Example: <code>123456789</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password_confirmation</code></b>&nbsp;&nbsp;
@@ -369,10 +369,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password_confirmation"                data-endpoint="POSTapi-v1-auth-register"
-               value="secretpassword"
+               value="123456789"
                data-component="body">
     <br>
-<p>The confirmation of the user's password. Example: <code>secretpassword</code></p>
+<p>The confirmation of the user's password. Example: <code>123456789</code></p>
         </div>
         </form>
 
@@ -395,7 +395,7 @@ If the login is successful, it returns an authentication token that can be used 
     --header "Accept: application/json" \
     --data "{
     \"email\": \"user@example.com\",
-    \"password\": \"secret\"
+    \"password\": \"123456789\"
 }"
 </code></pre></div>
 
@@ -412,7 +412,7 @@ const headers = {
 
 let body = {
     "email": "user@example.com",
-    "password": "secret"
+    "password": "123456789"
 };
 
 fetch(url, {
@@ -434,7 +434,7 @@ $response = $client-&gt;post(
         ],
         'json' =&gt; [
             'email' =&gt; 'user@example.com',
-            'password' =&gt; 'secret',
+            'password' =&gt; '123456789',
         ],
     ]
 );
@@ -449,7 +449,7 @@ import json
 url = '{{ config("app.url") }}/api/v1/auth/login'
 payload = {
     "email": "user@example.com",
-    "password": "secret"
+    "password": "123456789"
 }
 headers = {
   'Content-Type': 'application/json',
@@ -584,10 +584,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-v1-auth-login"
-               value="secret"
+               value="123456789"
                data-component="body">
     <br>
-<p>The password of the user. Example: <code>secret</code></p>
+<p>The password of the user. Example: <code>123456789</code></p>
         </div>
         </form>
 

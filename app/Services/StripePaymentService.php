@@ -7,13 +7,15 @@ use App\Models\User;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentMethod;
-use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class StripePaymentService
 {
-    public function __construct()
+    protected StripeClient $stripe;
+
+    public function __construct(StripeClient $stripeClient = null)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $this->stripe = $stripeClient ?? new StripeClient(config('services.stripe.secret'));
     }
 
     /**
@@ -25,7 +27,7 @@ class StripePaymentService
      */
     private function createCustomer(User $user): Customer
     {
-        $customer = Customer::create([
+        $customer = $this->stripe->customers->create([
             'email' => $user->getAttribute('email'),
             'name' => $user->getAttribute('name'),
         ]);
@@ -46,7 +48,7 @@ class StripePaymentService
     {
         $stripeId = $user->getAttribute('stripe_id');
 
-        return $stripeId ? Customer::retrieve($stripeId) : $this->createCustomer($user);
+        return $stripeId ? $this->stripe->customers->retrieve($stripeId) : $this->createCustomer($user);
     }
 
     /**
@@ -58,7 +60,7 @@ class StripePaymentService
      */
     private function createPaymentMethod(CreditCard $creditCard): PaymentMethod
     {
-        return PaymentMethod::create([
+        return $this->stripe->paymentMethods->create([
             'type' => 'card',
             'card' => [
                 'number' => $creditCard->card_number,
@@ -80,7 +82,7 @@ class StripePaymentService
     {
         $paymentMethodId = $user->getAttribute('pm_id');
 
-        return $paymentMethodId ? PaymentMethod::retrieve($paymentMethodId) : null;
+        return $paymentMethodId ? $this->stripe->paymentMethods->retrieve($paymentMethodId) : null;
     }
 
     /**

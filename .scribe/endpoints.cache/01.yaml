@@ -48,7 +48,7 @@ endpoints:
         name: password
         description: 'The password for the user account.'
         required: true
-        example: secretpassword
+        example: '123456789'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -57,7 +57,7 @@ endpoints:
         name: password_confirmation
         description: "The confirmation of the user's password."
         required: true
-        example: secretpassword
+        example: '123456789'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -65,8 +65,8 @@ endpoints:
     cleanBodyParameters:
       name: 'John Doe'
       email: user@example.com
-      password: secretpassword
-      password_confirmation: secretpassword
+      password: '123456789'
+      password_confirmation: '123456789'
     fileParameters: []
     responses:
       -
@@ -146,14 +146,14 @@ endpoints:
         name: password
         description: 'The password of the user.'
         required: true
-        example: secret
+        example: '123456789'
         type: string
         enumValues: []
         exampleWasSpecified: true
         custom: []
     cleanBodyParameters:
       email: user@example.com
-      password: secret
+      password: '123456789'
     fileParameters: []
     responses:
       -

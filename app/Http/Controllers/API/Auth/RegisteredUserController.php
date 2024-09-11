@@ -24,8 +24,8 @@ class RegisteredUserController extends Controller
      *
      * @bodyParam name string required The full name of the user. Example: John Doe
      * @bodyParam email string required The email address of the user. Example: user@example.com
-     * @bodyParam password string required The password for the user account. Example: secretpassword
-     * @bodyParam password_confirmation string required The confirmation of the user's password. Example: secretpassword
+     * @bodyParam password string required The password for the user account. Example: 123456789
+     * @bodyParam password_confirmation string required The confirmation of the user's password. Example: 123456789
      *
      * @response 201 {
      *   "success": true,

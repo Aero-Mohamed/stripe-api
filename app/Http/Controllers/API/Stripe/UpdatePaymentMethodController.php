@@ -10,6 +10,7 @@ use App\Http\Traits\ApiResponse;
 use App\Services\StripePaymentService;
 use Illuminate\Http\JsonResponse;
 use Stripe\Exception\ApiErrorException;
+use Stripe\StripeClient;
 
 class UpdatePaymentMethodController extends Controller
 {
@@ -55,23 +56,21 @@ class UpdatePaymentMethodController extends Controller
      *      "errors": []
      * }
      *
-     * @param StripePaymentService $stripePaymentService
      * @param UpdatePaymentMethodRequest $request
      * @return JsonResponse
      */
     public function __invoke(
-        StripePaymentService $stripePaymentService,
         UpdatePaymentMethodRequest $request
     ): JsonResponse {
         $user = auth_user();
         $creditCard = CreditCard::fromRequest();
 
         try {
-            $paymentMethod = $stripePaymentService->updatePaymentMethod($user, $creditCard);
+            $paymentMethod = $this->stripePaymentService()->updatePaymentMethod($user, $creditCard);
         } catch (ApiErrorException $e) {
             return $this->error(
                 message: $e->getMessage(),
-                statusCode: $e->getHttpStatus()
+                statusCode: $e->getHttpStatus() ?? 422
             );
         }
 
@@ -81,5 +80,21 @@ class UpdatePaymentMethodController extends Controller
             data: new UserResource($user),
             message: 'Payment Method Updated.'
         );
+    }
+
+    private function stripePaymentService(): StripePaymentService
+    {
+        // Ensure the Stripe secret key is set for testing
+        $secretKey = config('services.stripe.secret');
+
+        // Verify the secret key is a valid string
+        if (!is_string($secretKey) || empty($secretKey)) {
+            throw new \InvalidArgumentException('Stripe secret key is not properly set in the configuration.');
+        }
+
+        // Initialize the StripeClient with the correct secret key
+        $stripeClient = new StripeClient($secretKey);
+
+        return new StripePaymentService($stripeClient);
     }
 }

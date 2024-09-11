@@ -25,7 +25,7 @@ class AuthenticatedController extends Controller
      * @route POST /api/v1/auth/login
      *
      * @bodyParam email string required The email of the user. Example: user@example.com
-     * @bodyParam password string required The password of the user. Example: secret
+     * @bodyParam password string required The password of the user. Example: 123456789
      *
      * @response 200 {
      *   "success": true,
