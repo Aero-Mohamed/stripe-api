@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Stripe\PaymentMethod;
 
 class User extends Authenticatable
 {
@@ -46,5 +47,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @param PaymentMethod $paymentMethod
+     * @return void
+     */
+    public function updatePaymentMethod(PaymentMethod $paymentMethod): void
+    {
+        $this->setAttribute('pm_id', $paymentMethod->id);
+        $this->setAttribute('pm_type', $paymentMethod->type);
+        $this->setAttribute('pm_last_four', $paymentMethod->card['last4']);
+        $this->save();
     }
 }

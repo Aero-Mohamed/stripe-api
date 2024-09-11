@@ -14,13 +14,13 @@ class RegisteredUserController extends Controller
     use ApiResponse;
 
     /**
-     * Register a new user and create an account.
+     * Register
      *
      * This endpoint allows a new user to register by providing their details. Upon successful registration,
      * a new user account will be created, and the created user’s data will be returned along with a success message.
      *
      * @group Authentication
-     * @route POST /api/register
+     * @route POST /api/v1/auth/register
      *
      * @bodyParam name string required The full name of the user. Example: John Doe
      * @bodyParam email string required The email address of the user. Example: user@example.com

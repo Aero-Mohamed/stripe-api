@@ -1,41 +1,114 @@
-name: Endpoints
+name: Stripe
 description: ''
 endpoints:
   -
     httpMethods:
-      - GET
-    uri: api/user
+      - POST
+    uri: api/v1/stripe/update
     metadata:
-      groupName: Endpoints
+      groupName: Stripe
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Update Payment Method'
+      description: |-
+        This method is invoked when a user requests to update their payment method. It utilizes the
+        StripePaymentService to update the user's payment method details on Stripe and then updates
+        the user's payment method in the local application. If an error occurs during the Stripe API
+        call, it returns an error response with the appropriate message and HTTP status code.
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+    bodyParameters:
+      card_number:
+        name: card_number
+        description: 'The credit card number of the user.'
+        required: true
+        example: '4242424242424242'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      expiration_year:
+        name: expiration_year
+        description: 'The expiration year of the credit card.'
+        required: true
+        example: 2025
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      expiration_month:
+        name: expiration_month
+        description: 'The expiration month of the credit card.'
+        required: true
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      cvc:
+        name: cvc
+        description: 'The CVC (Card Verification Code) of the credit card.'
+        required: true
+        example: 123
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      card_number: '4242424242424242'
+      expiration_year: 2025
+      expiration_month: 12
+      cvc: 123
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"success":false,"status_code":401,"data":null,"message":"Unauthenticated.","errors":[]}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+               "success": true,
+               "status_code": 200,
+               "data": {
+                   "id": 1,
+                   "name": "John Doe",
+                   "email": "johndoe@example.com",
+                   "card": {
+                       "card_last_four": "4242",
+                       "card_type": "card"
+                   }
+               },
+               "message": "Payment Method Updated."
+               "errors": [],
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 402
+        content: |-
+          {
+               "success": false,
+               "status_code": 402,
+               "data": null,
+               "message": "Your card was declined.",
+               "errors": []
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer a41kv6DE5ge3hVdZa6cPfb8'
     controller: null
     method: null
     route: null

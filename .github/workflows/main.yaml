@@ -107,7 +107,7 @@ jobs:
         run: php --version
 
       # Code quality
-      - name: Execute tests (Unit and Feature tests) via PestPHP
+      - name: Execute tests (Unit and Feature tests)
         # Set environment
         env:
           DB_CONNECTION: mysql
@@ -116,7 +116,7 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password
 
-        run: ./vendor/bin/phpunit --coverage-html reports/
+        run: vendor/bin/phpunit --coverage-html reports/
 
       - uses: symfonycorp/security-checker-action@v5
 

@@ -19,6 +19,10 @@ class UserResource extends JsonResource
             'name'          => $this['name'],
             'email'         => $this['email'],
             'registered_at' => $this['created_at'],
+            'card'          => [
+                'card_last_four' => $this['pm_last_four'],
+                'card_type'      => $this['pm_type'],
+            ],
         ];
     }
 }

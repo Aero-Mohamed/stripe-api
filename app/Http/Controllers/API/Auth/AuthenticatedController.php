@@ -16,13 +16,13 @@ class AuthenticatedController extends Controller
     use ApiResponse;
 
     /**
-     * Login a user and provide an authentication token.
+     * Login
      *
      * This endpoint allows a user to log in using their credentials.
      * If the login is successful, it returns an authentication token that can be used for subsequent requests.
      *
      * @group Authentication
-     * @route POST /api/login
+     * @route POST /api/v1/auth/login
      *
      * @bodyParam email string required The email of the user. Example: user@example.com
      * @bodyParam password string required The password of the user. Example: secret
@@ -74,13 +74,14 @@ class AuthenticatedController extends Controller
     }
 
     /**
-     * Log out the currently authenticated user and revoke their authentication tokens.
+     * Log out
      *
      * This endpoint allows an authenticated user to log out by deleting all of their existing tokens.
      * After logging out, the user will no longer be able to use their previous tokens to access protected routes.
      *
+     * @authenticated
      * @group Authentication
-     * @route POST /api/logout
+     * @route POST /api/v1/auth/logout
      *
      * @response 200 {
      *   "success": true,

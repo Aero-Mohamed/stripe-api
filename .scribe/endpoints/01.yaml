@@ -10,7 +10,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Register a new user and create an account.'
+      title: Register
       description: |-
         This endpoint allows a new user to register by providing their details. Upon successful registration,
         a new user account will be created, and the created user’s data will be returned along with a success message.
@@ -96,8 +96,7 @@ endpoints:
             "errors": {
               "name": ["The name field is required."],
               "email": ["The email field is required.", "The email must be a valid email address."],
-              "password": ["The password field is required."],
-              "password_confirmation": ["The password confirmation does not match."]
+              "password": ["The password field is required.", "The password confirmation does not match."],
             }
           }
         headers: []
@@ -118,7 +117,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Login a user and provide an authentication token.'
+      title: Login
       description: |-
         This endpoint allows a user to log in using their credentials.
         If the login is successful, it returns an authentication token that can be used for subsequent requests.
@@ -204,13 +203,14 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Log out the currently authenticated user and revoke their authentication tokens.'
+      title: 'Log out'
       description: |-
         This endpoint allows an authenticated user to log out by deleting all of their existing tokens.
         After logging out, the user will no longer be able to use their previous tokens to access protected routes.
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -248,7 +248,10 @@ endpoints:
         description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer a41kv6DE5ge3hVdZa6cPfb8'
     controller: null
     method: null
     route: null

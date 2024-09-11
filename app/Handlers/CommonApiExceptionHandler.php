@@ -18,34 +18,47 @@ class CommonApiExceptionHandler
 
     public function handler(Exceptions $exceptions): void
     {
+
         // Handle ModelNotFoundException (e.g., when a model is not found)
-        $exceptions->renderable(function (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), self::$responseCode::HTTP_NOT_FOUND);
+        $exceptions->renderable(function (ModelNotFoundException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), self::$responseCode::HTTP_NOT_FOUND);
+            }
         });
 
         // Handle AuthenticationException (e.g., when a user is not authenticated)
-        $exceptions->renderable(function (AuthenticationException $e) {
-            return $this->error($e->getMessage(), self::$responseCode::HTTP_UNAUTHORIZED);
+        $exceptions->renderable(function (AuthenticationException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), self::$responseCode::HTTP_UNAUTHORIZED);
+            }
         });
 
         // Handle AuthorizationException (e.g., when a user lacks the required permissions)
-        $exceptions->renderable(function (AuthorizationException $e) {
-            return $this->error($e->getMessage(), self::$responseCode::HTTP_FORBIDDEN);
+        $exceptions->renderable(function (AuthorizationException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), self::$responseCode::HTTP_FORBIDDEN);
+            }
         });
 
         // Handle ValidationException (e.g., when form validation fails)
-        $exceptions->renderable(function (ValidationException $e) {
-            return $this->error($e->getMessage(), self::$responseCode::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
+        $exceptions->renderable(function (ValidationException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), self::$responseCode::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
+            }
         });
 
         // Handle NotFoundHttpException (e.g., when a route is not found)
-        $exceptions->renderable(function (NotFoundHttpException $e) {
-            return $this->error($e->getMessage(), self::$responseCode::HTTP_NOT_FOUND);
+        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), self::$responseCode::HTTP_NOT_FOUND);
+            }
         });
 
         // Handle generic HttpException
-        $exceptions->renderable(function (HttpException $e) {
-            return $this->error($e->getMessage(), $e->getStatusCode());
+        $exceptions->renderable(function (HttpException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return $this->error($e->getMessage(), $e->getStatusCode());
+            }
         });
     }
 }
