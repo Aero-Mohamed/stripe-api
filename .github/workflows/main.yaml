@@ -103,7 +103,7 @@ jobs:
 
       - name: Show dir
         run: pwd
-        
+
       - name: PHP Version
         run: php --version
 
@@ -111,6 +111,13 @@ jobs:
         run: php artisan passport:keys --force
 
       - name: Create Password Client
+        # Set environment
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: stripe_api
+          DB_PORT: 33306
+          DB_USER: root
+          DB_PASSWORD: password
         run: php artisan passport:client --password --name=Client1 --provider=users
 
       # Code quality
@@ -144,7 +151,7 @@ jobs:
         # Set environment
         env:
           DB_CONNECTION: mysql
-          DB_DATABASE: explearn
+          DB_DATABASE: stripe_api
           DB_PORT: 33306
           DB_USER: root
           DB_PASSWORD: password
