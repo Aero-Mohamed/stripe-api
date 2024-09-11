@@ -66,7 +66,8 @@ class UpdatePaymentMethodController extends Controller
         $creditCard = CreditCard::fromRequest();
 
         try {
-            $paymentMethod = $this->stripePaymentService()->updatePaymentMethod($user, $creditCard);
+            $stripePaymentService = StripePaymentService::init();
+            $paymentMethod = $stripePaymentService->updatePaymentMethod($user, $creditCard);
         } catch (ApiErrorException $e) {
             return $this->error(
                 message: $e->getMessage(),
@@ -80,21 +81,5 @@ class UpdatePaymentMethodController extends Controller
             data: new UserResource($user),
             message: 'Payment Method Updated.'
         );
-    }
-
-    private function stripePaymentService(): StripePaymentService
-    {
-        // Ensure the Stripe secret key is set for testing
-        $secretKey = config('services.stripe.secret');
-
-        // Verify the secret key is a valid string
-        if (!is_string($secretKey) || empty($secretKey)) {
-            throw new \InvalidArgumentException('Stripe secret key is not properly set in the configuration.');
-        }
-
-        // Initialize the StripeClient with the correct secret key
-        $stripeClient = new StripeClient($secretKey);
-
-        return new StripePaymentService($stripeClient);
     }
 }

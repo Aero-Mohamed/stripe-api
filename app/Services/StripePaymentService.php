@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Entities\Bill;
 use App\Entities\CreditCard;
 use App\Models\User;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\StripeClient;
 
@@ -16,6 +18,26 @@ class StripePaymentService
     public function __construct(StripeClient $stripeClient = null)
     {
         $this->stripe = $stripeClient ?? new StripeClient(config('services.stripe.secret'));
+    }
+
+    /**
+     * self Initialization
+     * @return StripePaymentService
+     */
+    public static function init(): StripePaymentService
+    {
+        // Ensure the Stripe secret key is set for testing
+        $secretKey = config('services.stripe.secret');
+
+        // Verify the secret key is a valid string
+        if (!is_string($secretKey) || empty($secretKey)) {
+            throw new \InvalidArgumentException('Stripe secret key is not properly set in the configuration.');
+        }
+
+        // Initialize the StripeClient with the correct secret key
+        $stripeClient = new StripeClient($secretKey);
+
+        return new self($stripeClient);
     }
 
     /**
@@ -110,5 +132,27 @@ class StripePaymentService
         ]);
 
         return $payment_method;
+    }
+
+    /**
+     * off_session & confirm
+     * read docs: https://docs.stripe.com/api/payment_intents/create#create_payment_intent-off_session
+     * @param Bill $bill
+     * @param User $user
+     * @return PaymentIntent
+     * @throws ApiErrorException
+     */
+    public function charge(User $user, Bill $bill): PaymentIntent
+    {
+        return $this->stripe->paymentIntents->create([
+            'amount' => intval($bill->amount * 100), // Amount in cents
+            'currency' => $bill->currency,
+            'customer' => $user->getAttribute('stripe_id'),
+            'payment_method' => $user->getAttribute('pm_id'),
+            'off_session' => true,
+            'confirm' => true, // Automatically confirm the payment intent
+            'description' => 'Charge for ' . $user->getAttribute('email') . '. ' . $bill->description,
+            'receipt_email' => $user->getAttribute('email'),
+        ]);
     }
 }

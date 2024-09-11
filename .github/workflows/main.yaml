@@ -116,7 +116,9 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password
 
-        run: vendor/bin/phpunit --coverage-html reports/
+        #run: vendor/bin/phpunit --coverage-html reports/
+        # use this command to display coverage report in CI actions
+        run: php artisan test --coverage
 
       - uses: symfonycorp/security-checker-action@v5
 

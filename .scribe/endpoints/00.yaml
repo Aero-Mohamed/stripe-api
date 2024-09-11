@@ -113,3 +113,155 @@ endpoints:
     method: null
     route: null
     custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/stripe/charge
+    metadata:
+      groupName: Stripe
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'charging request for a user'
+      description: |-
+        This method processes a payment request for the authenticated user by attempting
+         to charge the user using the Stripe payment service. If the user does not have
+         a payment method, or if an error occurs during the charge attempt, an appropriate
+         error response is returned.
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      amount:
+        name: amount
+        description: 'The amount to be charged.'
+        required: true
+        example: 29.99
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      currency:
+        name: currency
+        description: 'The currency code for the payment.'
+        required: true
+        example: USD
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      description:
+        name: description
+        description: 'A description of the payment.'
+        required: true
+        example: '"Subscription for September"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      amount: 29.99
+      currency: USD
+      description: '"Subscription for September"'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+               "success": true,
+               "status_code": 200,
+               "data": {
+                   "id": "pi_3Pxr2fLZrVU5jGta3mtpME1Q",
+                   "object": "payment_intent",
+                   "amount": 10000,
+                   "amount_capturable": 0,
+                   "amount_details": {
+                       "tip": []
+                   },
+                   "amount_received": 10000,
+                   "application": null,
+                   "application_fee_amount": null,
+                   "automatic_payment_methods": {
+                       "allow_redirects": "always",
+                       "enabled": true
+                   },
+                   "canceled_at": null,
+                   "cancellation_reason": null,
+                   "capture_method": "automatic_async",
+                   "client_secret": "pi_3Pxr2fLZrVU5jGta3mtpME1Q_secret_zqm4jKsxh7swSxhmOXz07jdi3",
+                   "confirmation_method": "automatic",
+                   "created": 1726063029,
+                   "currency": "usd",
+                   "customer": "cus_QpW3Dcpn1DtJIz",
+                   "description": "Charge for user@example.com. One Time Monthly Subscribtion",
+                   "invoice": null,
+                   "last_payment_error": null,
+                   "latest_charge": "ch_3Pxr2fLZrVU5jGta37YiLuH0",
+                   "livemode": false,
+                   "metadata": [],
+                   "next_action": null,
+                   "on_behalf_of": null,
+                   "payment_method": "pm_1Pxr1lLZrVU5jGtawrensV0o",
+                   "payment_method_configuration_details": {
+                       "id": "pmc_1LVAaTLZrVU5jGtaFXrWqZ8L",
+                       "parent": null
+                   },
+                   "payment_method_options": {
+                       "card": {
+                           "installments": null,
+                           "mandate_options": null,
+                           "network": null,
+                           "request_three_d_secure": "automatic"
+                       }
+                   },
+                   "payment_method_types": [
+                       "card"
+                   ],
+                   "processing": null,
+                   "receipt_email": null,
+                   "review": null,
+                   "setup_future_usage": null,
+                   "shipping": null,
+                   "source": null,
+                   "statement_descriptor": null,
+                   "statement_descriptor_suffix": null,
+                       "status": "succeeded",
+                       "transfer_data": null,
+                       "transfer_group": null
+               },
+               "message": "Payment Complete.",
+               "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 402
+        content: |-
+          {
+               "success": false,
+               "status_code": 402,
+               "data": null,
+               "message": "Your card was declined.",
+               "errors": []
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer a41kv6DE5ge3hVdZa6cPfb8'
+    controller: null
+    method: null
+    route: null
+    custom: []

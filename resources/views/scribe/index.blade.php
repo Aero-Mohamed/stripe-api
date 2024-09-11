@@ -94,6 +94,9 @@
                                                     <li class="tocify-item level-2" data-unique="stripe-POSTapi-v1-stripe-update">
                                 <a href="#stripe-POSTapi-v1-stripe-update">Update Payment Method</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="stripe-POSTapi-v1-stripe-charge">
+                                <a href="#stripe-POSTapi-v1-stripe-charge">charging request for a user</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -105,7 +108,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 11, 2024 (b7e2d3f)</li>
+        <li>Last updated: September 11, 2024 (e2519e6)</li>
     </ul>
 </div>
 
@@ -1036,6 +1039,304 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>The CVC (Card Verification Code) of the credit card. Example: <code>123</code></p>
+        </div>
+        </form>
+
+                    <h2 id="stripe-POSTapi-v1-stripe-charge">charging request for a user</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method processes a payment request for the authenticated user by attempting
+to charge the user using the Stripe payment service. If the user does not have
+a payment method, or if an error occurs during the charge attempt, an appropriate
+error response is returned.</p>
+
+<span id="example-requests-POSTapi-v1-stripe-charge">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "{{ config("app.url") }}/api/v1/stripe/charge" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"amount\": 29.99,
+    \"currency\": \"USD\",
+    \"description\": \"\\\"Subscription for September\\\"\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "{{ config("app.url") }}/api/v1/stripe/charge"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "amount": 29.99,
+    "currency": "USD",
+    "description": "\"Subscription for September\""
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = '{{ config("app.url") }}/api/v1/stripe/charge';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'amount' =&gt; 29.99,
+            'currency' =&gt; 'USD',
+            'description' =&gt; '"Subscription for September"',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = '{{ config("app.url") }}/api/v1/stripe/charge'
+payload = {
+    "amount": 29.99,
+    "currency": "USD",
+    "description": "\"Subscription for September\""
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-stripe-charge">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;status_code&quot;: 200,
+    &quot;data&quot;: {
+        &quot;id&quot;: &quot;pi_3Pxr2fLZrVU5jGta3mtpME1Q&quot;,
+        &quot;object&quot;: &quot;payment_intent&quot;,
+        &quot;amount&quot;: 10000,
+        &quot;amount_capturable&quot;: 0,
+        &quot;amount_details&quot;: {
+            &quot;tip&quot;: []
+        },
+        &quot;amount_received&quot;: 10000,
+        &quot;application&quot;: null,
+        &quot;application_fee_amount&quot;: null,
+        &quot;automatic_payment_methods&quot;: {
+            &quot;allow_redirects&quot;: &quot;always&quot;,
+            &quot;enabled&quot;: true
+        },
+        &quot;canceled_at&quot;: null,
+        &quot;cancellation_reason&quot;: null,
+        &quot;capture_method&quot;: &quot;automatic_async&quot;,
+        &quot;client_secret&quot;: &quot;pi_3Pxr2fLZrVU5jGta3mtpME1Q_secret_zqm4jKsxh7swSxhmOXz07jdi3&quot;,
+        &quot;confirmation_method&quot;: &quot;automatic&quot;,
+        &quot;created&quot;: 1726063029,
+        &quot;currency&quot;: &quot;usd&quot;,
+        &quot;customer&quot;: &quot;cus_QpW3Dcpn1DtJIz&quot;,
+        &quot;description&quot;: &quot;Charge for user@example.com. One Time Monthly Subscribtion&quot;,
+        &quot;invoice&quot;: null,
+        &quot;last_payment_error&quot;: null,
+        &quot;latest_charge&quot;: &quot;ch_3Pxr2fLZrVU5jGta37YiLuH0&quot;,
+        &quot;livemode&quot;: false,
+        &quot;metadata&quot;: [],
+        &quot;next_action&quot;: null,
+        &quot;on_behalf_of&quot;: null,
+        &quot;payment_method&quot;: &quot;pm_1Pxr1lLZrVU5jGtawrensV0o&quot;,
+        &quot;payment_method_configuration_details&quot;: {
+            &quot;id&quot;: &quot;pmc_1LVAaTLZrVU5jGtaFXrWqZ8L&quot;,
+            &quot;parent&quot;: null
+        },
+        &quot;payment_method_options&quot;: {
+            &quot;card&quot;: {
+                &quot;installments&quot;: null,
+                &quot;mandate_options&quot;: null,
+                &quot;network&quot;: null,
+                &quot;request_three_d_secure&quot;: &quot;automatic&quot;
+            }
+        },
+        &quot;payment_method_types&quot;: [
+            &quot;card&quot;
+        ],
+        &quot;processing&quot;: null,
+        &quot;receipt_email&quot;: null,
+        &quot;review&quot;: null,
+        &quot;setup_future_usage&quot;: null,
+        &quot;shipping&quot;: null,
+        &quot;source&quot;: null,
+        &quot;statement_descriptor&quot;: null,
+        &quot;statement_descriptor_suffix&quot;: null,
+        &quot;status&quot;: &quot;succeeded&quot;,
+        &quot;transfer_data&quot;: null,
+        &quot;transfer_group&quot;: null
+    },
+    &quot;message&quot;: &quot;Payment Complete.&quot;,
+    &quot;errors&quot;: null
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (402):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: false,
+    &quot;status_code&quot;: 402,
+    &quot;data&quot;: null,
+    &quot;message&quot;: &quot;Your card was declined.&quot;,
+    &quot;errors&quot;: []
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-stripe-charge" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-stripe-charge"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-stripe-charge"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-stripe-charge" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-stripe-charge">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-stripe-charge" data-method="POST"
+      data-path="api/v1/stripe/charge"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-stripe-charge', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-stripe-charge"
+                    onclick="tryItOut('POSTapi-v1-stripe-charge');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-stripe-charge"
+                    onclick="cancelTryOut('POSTapi-v1-stripe-charge');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-stripe-charge"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/stripe/charge</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-stripe-charge"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-stripe-charge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-stripe-charge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="amount"                data-endpoint="POSTapi-v1-stripe-charge"
+               value="29.99"
+               data-component="body">
+    <br>
+<p>The amount to be charged. Example: <code>29.99</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>currency</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="currency"                data-endpoint="POSTapi-v1-stripe-charge"
+               value="USD"
+               data-component="body">
+    <br>
+<p>The currency code for the payment. Example: <code>USD</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="description"                data-endpoint="POSTapi-v1-stripe-charge"
+               value=""Subscription for September""
+               data-component="body">
+    <br>
+<p>A description of the payment. Example: <code>"Subscription for September"</code></p>
         </div>
         </form>
 
